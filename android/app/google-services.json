@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "255454075630",
+    "firebase_url": "https://pinpointsample-7f18f.firebaseio.com",
+    "project_id": "pinpointsample-7f18f",
+    "storage_bucket": "pinpointsample-7f18f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255454075630:android:f98916a5eef0673e",
+        "android_client_info": {
+          "package_name": "com.pinpointsample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255454075630-apv38t37mi8vdtja3gn98lh3uomb1732.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxhEXxL8HkhFR5xBWTzd6LYzYSJrtxc-c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
