@@ -154,6 +154,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-push-notification')
     compile project(':react-native-fcm')
     compile 'com.google.firebase:firebase-core:10.0.1' 
     compile fileTree(dir: "libs", include: ["*.jar"])

@@ -22,6 +22,8 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+var PushNotification = require('react-native-push-notification');
+
 // this shall be called regardless of app state: running, background or not running. Won't be called when app is killed by user in iOS
 FCM.on(FCMEvent.Notification, async (notif) => {
     // there are two parts of notif. notif.notification contains the notification payload, notif.data contains data payload
@@ -61,25 +63,34 @@ FCM.on(FCMEvent.RefreshToken, (token) => {
 export default class App extends Component {
 
   componentDidMount() {
-    // iOS: show permission prompt for the first call. later just check permission in user settings
-    // Android: check permission in user settings
+    
     FCM.requestPermissions().then(()=>console.log('granted')).catch(()=>console.log('notification permission rejected'));
         
-        FCM.getFCMToken().then(token => {
-            console.warn("getFCMToken=>"+token)
-            // store fcm token in your server
-        });
+    FCM.getFCMToken().then(token => {
+      console.warn("getFCMToken=>"+token)
+    });
         
-        this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
-          console.warn("notificationListener=>"+JSON.stringify(notif))
-        });
+    this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
+      console.warn("notificationListener=>"+JSON.stringify(notif))
+
+      PushNotification.localNotification({
+        largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
+        smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
+        bigText: "", // (optional) default: "message" prop
+        subText: "", // (optional) default: none
+        vibrate: true, // (optional) default: true
+        vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
+        title: "Pin Point Sample", // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
+        message: notif.fcm.body // (required)   
+      });
+      
+    });
         
-        // initial notification contains the notification that launchs the app. If user launchs app by clicking banner, the banner notification info will be here rather than through FCM.on event
-        // sometimes Android kills activity when app goes to background, and when resume it broadcasts notification before JS is run. You can use FCM.getInitialNotification() to capture those missed events.
-        // initial notification will be triggered all the time even when open app by icon so send some action identifier when you send notification
-        FCM.getInitialNotification().then(notif => {
-          console.warn("getInitialNotification=>"+JSON.stringify(notif))
-        });
+    FCM.getInitialNotification().then(notif => {
+      console.warn("getInitialNotification=>"+JSON.stringify(notif))
+    });
+
+  
 }
 
   render() {
