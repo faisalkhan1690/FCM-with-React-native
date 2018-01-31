@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import FCM, {FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType} from 'react-native-fcm';
+ import FCM, {FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType} from 'react-native-fcm';
 
 
 import {
@@ -22,7 +22,7 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-var PushNotification = require('react-native-push-notification');
+//var PushNotification = require('react-native-push-notification');
 
 // this shall be called regardless of app state: running, background or not running. Won't be called when app is killed by user in iOS
 FCM.on(FCMEvent.Notification, async (notif) => {
@@ -41,6 +41,7 @@ FCM.on(FCMEvent.Notification, async (notif) => {
       //iOS requires developers to call completionHandler to end notification process. If you do not call it your background remote notifications could be throttled, to read more about it see https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623013-application.
       //This library handles it for you automatically with default behavior (for remote notification, finish with NoData; for WillPresent, finish depend on "show_in_foreground"). However if you want to return different result, follow the following code to override
       //notif._notificationType is available for iOS platfrom
+      alert("check")
       switch(notif._notificationType){
         case NotificationType.Remote:
           notif.finish(RemoteNotificationResult.NewData) //other types available: RemoteNotificationResult.NewData, RemoteNotificationResult.ResultFailed
@@ -72,17 +73,34 @@ export default class App extends Component {
         
     this.notificationListener = FCM.on(FCMEvent.Notification, async (notif) => {
       console.warn("notificationListener=>"+JSON.stringify(notif))
-
-      PushNotification.localNotification({
-        largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
-        smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
-        bigText: "", // (optional) default: "message" prop
-        subText: "", // (optional) default: none
-        vibrate: true, // (optional) default: true
-        vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
-        title: "Pin Point Sample", // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
-        message: notif.fcm.body // (required)   
-      });
+      alert("check")
+      if(Platform.OS ==='ios'){
+        //optional
+        //iOS requires developers to call completionHandler to end notification process. If you do not call it your background remote notifications could be throttled, to read more about it see https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623013-application.
+        //This library handles it for you automatically with default behavior (for remote notification, finish with NoData; for WillPresent, finish depend on "show_in_foreground"). However if you want to return different result, follow the following code to override
+        //notif._notificationType is available for iOS platfrom
+        switch(notif._notificationType){
+          case NotificationType.Remote:
+            notif.finish(RemoteNotificationResult.NewData) //other types available: RemoteNotificationResult.NewData, RemoteNotificationResult.ResultFailed
+            break;
+          case NotificationType.NotificationResponse:
+            notif.finish();
+            break;
+          case NotificationType.WillPresent:
+            notif.finish(WillPresentNotificationResult.All) //other types available: WillPresentNotificationResult.None
+            break;
+        }
+      }
+      // PushNotification.localNotification({
+      //   largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
+      //   smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher"
+      //   bigText: "", // (optional) default: "message" prop
+      //   subText: "", // (optional) default: none
+      //   vibrate: true, // (optional) default: true
+      //   vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
+      //   title: "Pin Point Sample", // (optional, for iOS this is only used in apple watch, the title will be the app name on other iOS devices)
+      //   message: notif.fcm.body // (required)   
+      // });
       
     });
         

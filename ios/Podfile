@@ -1,0 +1,33 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'pinpointsample' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+  pod 'Firebase/Messaging'
+  # Pods for pinpointsample
+
+#   target 'pinpointsample-tvOSTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
+
+#   target 'pinpointsampleTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
+
+# end
+
+# target 'pinpointsample-tvOS' do
+#   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+#   # use_frameworks!
+
+#   # Pods for pinpointsample-tvOS
+
+#   target 'pinpointsample-tvOSTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
+
+end
